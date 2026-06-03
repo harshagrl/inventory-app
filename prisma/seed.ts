@@ -3,7 +3,7 @@
 // Run with: npx prisma db seed
 // ──────────────────────────────────────────────────────────────
 
-import { Role, BaseUnit } from "@prisma/client";
+
 import bcrypt from "bcryptjs";
 import { prisma } from "../src/lib/prisma";
 
@@ -22,7 +22,7 @@ async function main() {
       email: "admin@test.com",
       name: "Admin User",
       password: adminPassword,
-      role: Role.ADMIN,
+      role: "ADMIN" as any,
     },
   });
 
@@ -33,7 +33,7 @@ async function main() {
       email: "seller@test.com",
       name: "Seller User",
       password: sellerPassword,
-      role: Role.SELLER,
+      role: "SELLER" as any,
     },
   });
 
@@ -53,7 +53,7 @@ async function main() {
           "Aged long-grain basmati rice, perfect for biryani and pulao. Sourced from the foothills of the Himalayas.",
         sku: "RICE-BAS-001",
         category: "Grains & Cereals",
-        baseUnit: BaseUnit.GRAM,
+        baseUnit: "GRAM" as any,
         basePricePaise: BigInt(8500), // ₹85.00 per kg → 8500 paise per 1000g → stored as price per kg
         stockQuantityBase: 50000, // 50 kg in grams
       },
@@ -68,7 +68,7 @@ async function main() {
           "Cold-pressed extra virgin olive oil imported from Spain. Ideal for salads, cooking, and dipping.",
         sku: "OIL-OLV-002",
         category: "Oils & Condiments",
-        baseUnit: BaseUnit.MILLILITER,
+        baseUnit: "MILLILITER" as any,
         basePricePaise: BigInt(65000), // ₹650.00 per litre → stored as paise per 1000ml
         stockQuantityBase: 25000, // 25 litres in millilitres
       },
@@ -83,7 +83,7 @@ async function main() {
           "Free-range eggs from local farms. Rich yolk color and superior taste. Pack of 1 egg unit.",
         sku: "EGG-FRM-003",
         category: "Dairy & Eggs",
-        baseUnit: BaseUnit.ITEM,
+        baseUnit: "ITEM" as any,
         basePricePaise: BigInt(800), // ₹8.00 per egg
         stockQuantityBase: 500, // 500 eggs
       },
@@ -98,7 +98,7 @@ async function main() {
           "Fresh pasteurized full cream milk with 3.5% fat content. Perfect for tea, coffee, and desserts.",
         sku: "MILK-FUL-004",
         category: "Dairy & Eggs",
-        baseUnit: BaseUnit.MILLILITER,
+        baseUnit: "MILLILITER" as any,
         basePricePaise: BigInt(5600), // ₹56.00 per litre
         stockQuantityBase: 100000, // 100 litres in ml
       },
@@ -113,7 +113,7 @@ async function main() {
           "Premium quality raw California almonds. Rich in protein, fiber, and healthy fats. Great for snacking.",
         sku: "NUT-ALM-005",
         category: "Dry Fruits & Nuts",
-        baseUnit: BaseUnit.GRAM,
+        baseUnit: "GRAM" as any,
         basePricePaise: BigInt(120000), // ₹1200.00 per kg
         stockQuantityBase: 10000, // 10 kg in grams
       },
