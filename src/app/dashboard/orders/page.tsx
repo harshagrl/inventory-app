@@ -56,7 +56,7 @@ export default async function SellerOrdersPage() {
   // Wait, if they typed 2.5 and ordered in kg, `unitDisplayQuantity` is 2.5. 
   // How do we know it was kg and not g?
   const formatOrderedQuantity = (baseQuantityDecimal: number, baseUnit: string) => {
-    return formatQuantity(baseQuantityDecimal, baseUnit);
+    return formatQuantity(baseQuantityDecimal, baseUnit as "GRAM" | "MILLILITER" | "ITEM");
   };
 
   return (
@@ -103,7 +103,7 @@ export default async function SellerOrdersPage() {
                         <span className="font-semibold text-white">{item.product.name}</span>
                       </div>
                       <span className="text-[#a1a1aa] font-medium bg-[#18181b] px-3 py-1 rounded-lg border border-[#27272a]">
-                        {formatOrderedQuantity(item.quantityBase, item.product.baseUnit)}
+                        {formatOrderedQuantity(Number(item.quantityBase), item.product.baseUnit)}
                       </span>
                     </li>
                   ))}

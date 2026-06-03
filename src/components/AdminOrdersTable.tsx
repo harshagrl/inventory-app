@@ -9,6 +9,7 @@ type OrderItem = {
   id: string;
   quantityBase: number;
   unitOrdered: string;
+  displayUnitOrdered: string;
   unitDisplayQuantity: number;
   unitPricePaiseAtOrder: string;
   product: { name: string };
@@ -125,7 +126,7 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
                     </td>
                     <td className="p-4">
                       <span className="text-sm font-bold text-emerald-400">
-                        {formatPriceINR(order.totalPaise)}
+                        {formatPriceINR(BigInt(order.totalPaise))}
                       </span>
                     </td>
                     <td className="p-4">
@@ -158,14 +159,14 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
                             {order.items.map(item => {
                               // Item price logic: depending on what was ordered vs base unit
                               // We just display the calculated equivalent directly so admin can verify
-                              const equivalentBase = formatQuantity(item.quantityBase, item.unitOrdered);
+                              const equivalentBase = formatQuantity(item.quantityBase, item.unitOrdered as "GRAM" | "MILLILITER" | "ITEM");
                               // A robust way to display:
                               return (
                                 <div key={item.id} className="bg-[#0c0c0e] p-4 rounded-xl border border-[#27272a] flex flex-wrap items-center justify-between gap-4">
                                   <div className="flex-1 min-w-[200px]">
                                     <div className="font-bold text-white text-sm mb-1">{item.product.name}</div>
                                     <div className="text-xs text-[#a1a1aa]">
-                                      Price per base unit at time of order: {formatPriceINR(item.unitPricePaiseAtOrder)}
+                                      Price per base unit at time of order: {formatPriceINR(BigInt(item.unitPricePaiseAtOrder))}
                                     </div>
                                   </div>
                                   
@@ -174,7 +175,7 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
                                     <div className="flex items-center gap-3 text-sm">
                                       <div className="flex flex-col">
                                         <span className="text-[#a1a1aa] text-xs">User Input:</span>
-                                        <span className="font-semibold text-white">{item.unitDisplayQuantity} qty/units</span>
+                                        <span className="font-semibold text-white">{item.unitDisplayQuantity} {item.displayUnitOrdered || "units"}</span>
                                       </div>
                                       <div className="text-[#71717a]">→</div>
                                       <div className="flex flex-col">

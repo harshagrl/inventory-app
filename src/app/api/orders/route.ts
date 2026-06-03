@@ -39,6 +39,10 @@ export async function POST(req: NextRequest) {
           throw new Error(`Product ${item.productId} not found`);
         }
 
+        if (item.quantity <= 0) {
+          throw new Error(`Quantity for ${product.name} must be greater than 0`);
+        }
+
         const quantityInBaseUnits = item.quantity * getConversionFactor(item.unit);
         
         if (Number(product.stockQuantityBase) < quantityInBaseUnits) {
@@ -74,6 +78,7 @@ export async function POST(req: NextRequest) {
           productId: product.id,
           quantityBase: quantityInBaseUnits,
           unitOrdered: getBaseUnit(item.unit), // Store the base unit enum representation of what they ordered, but wait schema wants BaseUnit Enum
+          displayUnitOrdered: item.unit, // e.g. "kg", "L"
           unitDisplayQuantity: item.quantity, // Store exactly what they typed
           unitPricePaiseAtOrder: product.basePricePaise, // Snapshot the price
         });

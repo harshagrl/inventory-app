@@ -133,6 +133,7 @@ model OrderItem {
   productId              String   @map("product_id")
   quantityBase           Decimal  @map("quantity_base") @db.Decimal(12, 3) // qty in base unit
   unitOrdered            BaseUnit @map("unit_ordered")
+  displayUnitOrdered     String   @default("") @map("display_unit_ordered") // e.g. "kg", "mL"
   unitDisplayQuantity    Decimal  @map("unit_display_quantity") @db.Decimal(12, 3) // human-friendly qty
   unitPricePaiseAtOrder  BigInt   @map("unit_price_paise_at_order") // price snapshot
 

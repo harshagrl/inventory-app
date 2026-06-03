@@ -183,7 +183,7 @@ export default function SellerProductsPage() {
                   <div>
                     <span className="block text-[10px] uppercase tracking-wider font-bold text-[#a1a1aa]">Price</span>
                     <span className="text-sm font-semibold text-emerald-400">
-                      {formatPriceINR(product.basePricePaise)}
+                      {formatPriceINR(BigInt(product.basePricePaise))}
                       <span className="text-[#71717a] text-[10px] ml-1">
                         / {product.baseUnit === "ITEM" ? "item" : product.baseUnit === "GRAM" ? "kg" : "L"}
                       </span>

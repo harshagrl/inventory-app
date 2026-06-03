@@ -46,6 +46,7 @@ export default async function AdminOrdersPage() {
       id: item.id,
       quantityBase: Number(item.quantityBase),
       unitOrdered: item.unitOrdered,
+      displayUnitOrdered: item.displayUnitOrdered,
       unitDisplayQuantity: Number(item.unitDisplayQuantity),
       unitPricePaiseAtOrder: item.unitPricePaiseAtOrder.toString(),
       product: { name: item.product.name },
