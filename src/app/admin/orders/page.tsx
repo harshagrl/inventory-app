@@ -33,6 +33,7 @@ export default async function AdminOrdersPage() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serializedOrders = orders.map((order: any) => ({
     id: order.id,
     status: order.status,
@@ -40,6 +41,7 @@ export default async function AdminOrdersPage() {
     createdAt: order.createdAt.toISOString(),
     notes: order.notes,
     user: { name: order.user.name, email: order.user.email },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     items: order.items.map((item: any) => ({
       id: item.id,
       quantityBase: Number(item.quantityBase),
