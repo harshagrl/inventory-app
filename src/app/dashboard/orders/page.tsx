@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatPriceINR, formatQuantity } from "@/lib/units";
-import { Clock, ShoppingBag, Package, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import { Clock, ShoppingBag, Package, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 
 export const revalidate = 0;

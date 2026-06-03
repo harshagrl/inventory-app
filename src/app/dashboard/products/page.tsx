@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, ShoppingBag, Package, Check, Loader2, Filter } from "lucide-react";
+import { Search, ShoppingBag, Package, Loader2, Filter } from "lucide-react";
 import OrderUnitSelector from "@/components/OrderUnitSelector";
 import { formatPriceINR, formatQuantity, type DisplayUnit } from "@/lib/units";
 import { toast } from "react-hot-toast";
