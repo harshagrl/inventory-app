@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import AuthSessionProvider from "@/components/SessionProvider";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +34,16 @@ export default function RootLayout({
             NextAuth's <SessionProvider>. It injects the session
             context so any child component can call useSession().
             The layout itself stays a Server Component. */}
-        <AuthSessionProvider>{children}</AuthSessionProvider>
+        <AuthSessionProvider>
+          {children}
+          <Toaster position="top-right" toastOptions={{
+            style: {
+              background: '#18181b',
+              color: '#fff',
+              border: '1px solid #27272a'
+            }
+          }} />
+        </AuthSessionProvider>
       </body>
     </html>
   );

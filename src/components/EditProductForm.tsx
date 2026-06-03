@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Shield, Save, Loader2, AlertCircle } from "lucide-react";
-import { DISPLAY_UNIT_OPTIONS, fromBaseUnit, type DisplayUnit } from "@/lib/units";
+import { DISPLAY_UNIT_OPTIONS, fromBaseUnit } from "@/lib/units";
+import { toast } from "react-hot-toast";
 
 interface EditProductFormProps {
   initialData: {
@@ -71,13 +72,16 @@ export default function EditProductForm({ initialData }: EditProductFormProps) {
       if (!res.ok) {
         const data = await res.json();
         setError(data.error || "Failed to update product");
+        toast.error(data.error || "Failed to update product");
         return;
       }
 
+      toast.success("Product updated successfully!");
       router.push("/admin/products");
       router.refresh();
     } catch {
       setError("Network error — could not update product.");
+      toast.error("Network error — could not update product.");
     } finally {
       setIsSubmitting(false);
     }

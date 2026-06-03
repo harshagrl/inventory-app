@@ -20,9 +20,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  ArrowLeft, Shield, Package, Loader2, AlertCircle, CheckCircle,
+  ArrowLeft, Shield, Package, Loader2, AlertCircle,
 } from "lucide-react";
 import { DISPLAY_UNIT_OPTIONS } from "@/lib/units";
+import { toast } from "react-hot-toast";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -68,14 +69,17 @@ export default function NewProductPage() {
       if (!res.ok) {
         const data = await res.json();
         setError(data.error || "Failed to create product");
+        toast.error(data.error || "Failed to create product");
         return;
       }
 
       // Success — redirect to products list
+      toast.success("Product created successfully!");
       router.push("/admin/products");
       router.refresh();
     } catch {
       setError("Network error — could not create product.");
+      toast.error("Network error — could not create product.");
     } finally {
       setIsSubmitting(false);
     }
