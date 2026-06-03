@@ -33,14 +33,14 @@ export default async function AdminOrdersPage() {
     },
   });
 
-  const serializedOrders = orders.map(order => ({
+  const serializedOrders = orders.map((order: any) => ({
     id: order.id,
     status: order.status,
     totalPaise: order.totalPaise.toString(),
     createdAt: order.createdAt.toISOString(),
     notes: order.notes,
     user: { name: order.user.name, email: order.user.email },
-    items: order.items.map(item => ({
+    items: order.items.map((item: any) => ({
       id: item.id,
       quantityBase: Number(item.quantityBase),
       unitOrdered: item.unitOrdered,
