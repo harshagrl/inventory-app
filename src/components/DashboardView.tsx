@@ -71,7 +71,7 @@ export default function DashboardView({ initialProducts, initialOrders }: Props)
               <Layers className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-lg leading-tight">StockFlow</h1>
+              <h1 className="font-bold text-lg leading-tight">AASA MEDCHEM</h1>
               <span className="text-xs text-[#a1a1aa] uppercase tracking-wider">v14 App Router</span>
             </div>
           </div>

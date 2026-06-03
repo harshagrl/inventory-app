@@ -25,7 +25,7 @@ export default async function HomePage() {
           <Layers className="h-16 w-16 text-violet-500 mb-4" />
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
-          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">StockFlow</span>
+          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">AASA MEDCHEM</span>
         </h1>
         <p className="text-[#a1a1aa] mb-10 text-lg">
           The smart inventory and order management system for modern businesses.

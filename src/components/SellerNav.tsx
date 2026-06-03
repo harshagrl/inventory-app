@@ -20,7 +20,7 @@ export default function SellerNav() {
           {/* Logo & Brand */}
           <div className="flex items-center flex-shrink-0 cursor-pointer">
             <Layers className="h-6 w-6 text-violet-500 mr-2" />
-            <span className="font-bold text-lg tracking-tight text-white">StockFlow</span>
+            <span className="font-bold text-lg tracking-tight text-white">AASA MEDCHEM</span>
             <span className="ml-2 px-2 py-0.5 rounded text-[10px] font-bold bg-[#18181b] text-[#a1a1aa] uppercase tracking-wider hidden sm:block">
               Seller
             </span>

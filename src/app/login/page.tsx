@@ -75,7 +75,7 @@ export default function LoginPage() {
             <Layers className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-2xl font-extrabold text-white tracking-tight">
-            StockFlow
+            AASA MEDCHEM
           </h1>
           <p className="text-sm text-[#a1a1aa] mt-1">
             Inventory & Order Management System

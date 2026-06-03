@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "StockFlow — Neon & Prisma Inventory System",
+  title: "AASA MEDCHEM — Neon & Prisma Inventory System",
   description: "Next.js 14 Hackathon inventory and order management system",
 };
 
