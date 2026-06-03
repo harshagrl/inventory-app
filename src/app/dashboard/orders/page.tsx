@@ -55,104 +55,79 @@ export default async function SellerOrdersPage() {
   // We can just format it nicely using `unitDisplayQuantity`. If `unitOrdered` is GRAM, and quantity is small, maybe it was meant to be kg.
   // Wait, if they typed 2.5 and ordered in kg, `unitDisplayQuantity` is 2.5. 
   // How do we know it was kg and not g?
-  const formatOrderedQuantity = (baseQuantityDecimal: any, baseUnit: any) => {
-    return formatQuantity(Number(baseQuantityDecimal), baseUnit);
+  const formatOrderedQuantity = (baseQuantityDecimal: number, baseUnit: string) => {
+    return formatQuantity(baseQuantityDecimal, baseUnit);
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#f4f4f5] flex">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 border-r border-[#27272a] bg-[#0c0c0e] p-6 hidden md:flex flex-col">
-        <div className="mb-8">
-          <h1 className="font-bold text-lg leading-tight">StockFlow</h1>
-          <span className="text-xs text-[#a1a1aa] uppercase tracking-wider">Seller Portal</span>
-        </div>
-        <nav className="space-y-2">
-          <Link href="/dashboard/products" className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#a1a1aa] hover:text-white hover:bg-[#18181b] text-sm transition-colors">
-            <Package className="h-4 w-4" /> Catalog
-          </Link>
-          <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-violet-600/10 border-l-2 border-violet-500 text-white font-medium text-sm">
-            <ShoppingBag className="h-4 w-4 text-violet-400" /> Order History
-          </div>
-        </nav>
-      </aside>
+    <main className="flex-1 p-6 md:p-10 max-w-7xl mx-auto w-full">
+      <header className="mb-8">
+        <h2 className="text-2xl font-extrabold tracking-tight text-white">Your Orders</h2>
+        <p className="text-sm text-[#a1a1aa]">View and track the status of your submitted orders.</p>
+      </header>
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 md:p-10">
-        <header className="mb-8 flex items-center gap-4">
-          <Link href="/dashboard/products" className="md:hidden p-2 rounded-lg text-[#a1a1aa] hover:text-white hover:bg-[#18181b]">
-            <ArrowLeft className="h-5 w-5" />
-          </Link>
-          <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-white">Your Orders</h2>
-            <p className="text-sm text-[#a1a1aa]">View and track the status of your submitted orders.</p>
-          </div>
-        </header>
-
-        <div className="space-y-6">
-          {orders.length > 0 ? (
-            orders.map(order => (
-              <div key={order.id} className="bg-[#0c0c0e] border border-[#27272a] rounded-2xl overflow-hidden shadow-lg">
-                <div className="bg-[#18181b] p-5 border-b border-[#27272a] flex flex-wrap gap-4 items-center justify-between">
-                  <div>
-                    <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Order ID</span>
-                    <span className="text-sm font-mono text-white">#{order.id.slice(-8)}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Date</span>
-                    <span className="text-sm text-white">
-                      {new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Total</span>
-                    <span className="text-sm font-bold text-emerald-400">{formatPriceINR(order.totalPaise)}</span>
-                  </div>
-                  <div>
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(order.status)}`}>
-                      {getStatusIcon(order.status)}
-                      {order.status}
-                    </span>
-                  </div>
+      <div className="space-y-6">
+        {orders.length > 0 ? (
+          orders.map(order => (
+            <div key={order.id} className="bg-[#0c0c0e] border border-[#27272a] rounded-2xl overflow-hidden shadow-lg">
+              <div className="bg-[#18181b] p-5 border-b border-[#27272a] flex flex-wrap gap-4 items-center justify-between">
+                <div>
+                  <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Order ID</span>
+                  <span className="text-sm font-mono text-white">#{order.id.slice(-8)}</span>
                 </div>
-                
-                <div className="p-5">
-                  <h4 className="text-xs font-bold text-[#a1a1aa] uppercase tracking-wider mb-4 border-b border-[#27272a] pb-2">Items</h4>
-                  <ul className="space-y-3">
-                    {order.items.map(item => (
-                      <li key={item.id} className="flex justify-between items-center text-sm">
-                        <div className="flex items-center gap-3">
-                          <Package className="h-4 w-4 text-[#71717a]" />
-                          <span className="font-semibold text-white">{item.product.name}</span>
-                        </div>
-                        <span className="text-[#a1a1aa] font-medium bg-[#18181b] px-3 py-1 rounded-lg border border-[#27272a]">
-                          {/* Use our formatQuantity helper which auto-selects kg/L based on the base quantity */}
-                          {formatOrderedQuantity(item.quantityBase, item.product.baseUnit)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  {order.notes && (
-                    <div className="mt-4 pt-4 border-t border-[#27272a]">
-                      <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block mb-1">Notes</span>
-                      <p className="text-xs text-[#a1a1aa] italic">{order.notes}</p>
-                    </div>
-                  )}
+                <div>
+                  <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Date</span>
+                  <span className="text-sm text-white">
+                    {new Date(order.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block">Total</span>
+                  <span className="text-sm font-bold text-emerald-400">{formatPriceINR(order.totalPaise)}</span>
+                </div>
+                <div>
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${getStatusColor(order.status)}`}>
+                    {getStatusIcon(order.status)}
+                    {order.status}
+                  </span>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="text-center py-20 border-2 border-dashed border-[#27272a] rounded-2xl bg-[#0c0c0e]">
-              <ShoppingBag className="h-12 w-12 mx-auto text-[#3f3f46] mb-4" />
-              <h3 className="text-lg font-bold text-white">No orders yet</h3>
-              <p className="text-sm text-[#a1a1aa] mt-1 mb-6">You haven't placed any orders.</p>
-              <Link href="/dashboard/products" className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl text-sm font-bold transition-colors">
-                <Package className="h-4 w-4" /> Browse Catalog
-              </Link>
+              
+              <div className="p-5">
+                <h4 className="text-xs font-bold text-[#a1a1aa] uppercase tracking-wider mb-4 border-b border-[#27272a] pb-2">Items</h4>
+                <ul className="space-y-3">
+                  {order.items.map(item => (
+                    <li key={item.id} className="flex justify-between items-center text-sm">
+                      <div className="flex items-center gap-3">
+                        <Package className="h-4 w-4 text-[#71717a]" />
+                        <span className="font-semibold text-white">{item.product.name}</span>
+                      </div>
+                      <span className="text-[#a1a1aa] font-medium bg-[#18181b] px-3 py-1 rounded-lg border border-[#27272a]">
+                        {formatOrderedQuantity(item.quantityBase, item.product.baseUnit)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {order.notes && (
+                  <div className="mt-4 pt-4 border-t border-[#27272a]">
+                    <span className="text-[10px] text-[#71717a] uppercase font-bold tracking-wider block mb-1">Notes</span>
+                    <p className="text-xs text-[#a1a1aa] italic">&quot;{order.notes}&quot;</p>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-        </div>
-      </main>
-    </div>
+          ))
+        ) : (
+          <div className="text-center py-20 border-2 border-dashed border-[#27272a] rounded-2xl bg-[#0c0c0e]">
+            <ShoppingBag className="h-12 w-12 mx-auto text-[#3f3f46] mb-4" />
+            <h3 className="text-lg font-bold text-white">No orders yet</h3>
+            <p className="text-sm text-[#a1a1aa] mt-1 mb-6">You haven&apos;t placed any orders.</p>
+            <Link href="/dashboard/products" className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-xl text-sm font-bold transition-colors">
+              <Package className="h-4 w-4" /> Browse Catalog
+            </Link>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }

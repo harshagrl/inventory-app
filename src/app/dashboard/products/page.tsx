@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Search, ShoppingBag, Package, Check, Loader2, Filter } from "lucide-react";
 import OrderUnitSelector from "@/components/OrderUnitSelector";
 import { formatPriceINR, formatQuantity, type DisplayUnit } from "@/lib/units";
+import { toast } from "react-hot-toast";
 
 interface Product {
   id: string;
@@ -34,7 +35,6 @@ export default function SellerProductsPage() {
   // Shopping Cart / Quote State
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isOrdering, setIsOrdering] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
 
   // Fetch products with filters
   useEffect(() => {
@@ -100,17 +100,15 @@ export default function SellerProductsPage() {
       });
       
       if (res.ok) {
-        setOrderSuccess(true);
+        toast.success("Order Placed Successfully!");
         setCart([]);
-        setTimeout(() => setOrderSuccess(false), 3000);
-        // We could also re-fetch products to update stock here
       } else {
         const error = await res.json();
-        alert(`Failed to place order: ${error.error}`);
+        toast.error(`Failed to place order: ${error.error}`);
       }
     } catch (e) {
       console.error(e);
-      alert("Network error while placing order.");
+      toast.error("Network error while placing order.");
     } finally {
       setIsOrdering(false);
     }
@@ -119,9 +117,9 @@ export default function SellerProductsPage() {
   const cartTotalPaise = cart.reduce((sum, item) => sum + item.pricePaise, 0);
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#f4f4f5] flex flex-col lg:flex-row">
+    <div className="h-[calc(100vh-4rem)] bg-[#09090b] text-[#f4f4f5] flex flex-col lg:flex-row">
       {/* Main Content (Products) */}
-      <div className="flex-1 p-6 lg:p-10 lg:border-r border-[#27272a] h-screen overflow-y-auto">
+      <div className="flex-1 p-6 lg:p-10 lg:border-r border-[#27272a] h-full overflow-y-auto">
         <header className="mb-8">
           <h1 className="text-2xl font-extrabold tracking-tight text-white mb-2">
             Catalog & Ordering
@@ -216,7 +214,7 @@ export default function SellerProductsPage() {
       </div>
 
       {/* Sidebar (Cart / Quote) */}
-      <div className="w-full lg:w-96 bg-[#0c0c0e] border-t lg:border-t-0 border-[#27272a] flex flex-col h-screen sticky top-0">
+      <div className="w-full lg:w-96 bg-[#0c0c0e] border-t lg:border-t-0 border-[#27272a] flex flex-col h-full sticky top-16 lg:top-0">
         <div className="p-6 border-b border-[#27272a]">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
             <ShoppingBag className="h-5 w-5 text-violet-400" />
@@ -265,21 +263,14 @@ export default function SellerProductsPage() {
             </span>
           </div>
 
-          {orderSuccess ? (
-            <div className="w-full py-3.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl flex items-center justify-center gap-2 font-bold text-sm">
-              <Check className="h-5 w-5" />
-              Order Placed Successfully!
-            </div>
-          ) : (
-            <button
-              onClick={placeOrder}
-              disabled={cart.length === 0 || isOrdering}
-              className="w-full py-3.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-violet-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isOrdering ? <Loader2 className="h-5 w-5 animate-spin" /> : <ShoppingBag className="h-5 w-5" />}
-              Submit Order
-            </button>
-          )}
+          <button
+            onClick={placeOrder}
+            disabled={cart.length === 0 || isOrdering}
+            className="w-full py-3.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-violet-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isOrdering ? <Loader2 className="h-5 w-5 animate-spin" /> : <ShoppingBag className="h-5 w-5" />}
+            Submit Order
+          </button>
         </div>
       </div>
     </div>
