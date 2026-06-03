@@ -28,7 +28,8 @@ export default async function AdminDashboardPage() {
     select: { totalPaise: true },
   });
   const totalRevenuePaise = deliveredOrders.reduce(
-    (sum, order) => sum + Number(order.totalPaise),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (sum: number, order: any) => sum + Number(order.totalPaise),
     0
   );
 
