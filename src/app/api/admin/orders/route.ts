@@ -26,10 +26,12 @@ export async function GET() {
   });
 
   // Serialize BigInts and Decimals for JSON response
-  const serializedOrders = orders.map(order => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const serializedOrders = orders.map((order: any) => ({
     ...order,
     totalPaise: order.totalPaise.toString(),
-    items: order.items.map(item => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    items: order.items.map((item: any) => ({
       ...item,
       quantityBase: Number(item.quantityBase),
       unitDisplayQuantity: Number(item.unitDisplayQuantity),

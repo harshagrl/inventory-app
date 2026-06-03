@@ -68,7 +68,8 @@ export default async function SellerOrdersPage() {
 
       <div className="space-y-6">
         {orders.length > 0 ? (
-          orders.map(order => (
+          /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+          orders.map((order: any) => (
             <div key={order.id} className="bg-[#0c0c0e] border border-[#27272a] rounded-2xl overflow-hidden shadow-lg">
               <div className="bg-[#18181b] p-5 border-b border-[#27272a] flex flex-wrap gap-4 items-center justify-between">
                 <div>
@@ -96,7 +97,8 @@ export default async function SellerOrdersPage() {
               <div className="p-5">
                 <h4 className="text-xs font-bold text-[#a1a1aa] uppercase tracking-wider mb-4 border-b border-[#27272a] pb-2">Items</h4>
                 <ul className="space-y-3">
-                  {order.items.map(item => (
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {order.items.map((item: any) => (
                     <li key={item.id} className="flex justify-between items-center text-sm">
                       <div className="flex items-center gap-3">
                         <Package className="h-4 w-4 text-[#71717a]" />

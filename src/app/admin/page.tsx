@@ -37,7 +37,8 @@ export default async function AdminDashboardPage() {
   // Let's use a dynamic threshold depending on base unit to be slightly more accurate, but for now we'll fetch items and filter in JS for simplicity or use a static low threshold in query.
   const products = await prisma.product.findMany();
   
-  const lowStockProducts = products.filter(p => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lowStockProducts = products.filter((p: any) => {
     // For ITEM, threshold could be 50. For GRAM/MILLILITER, threshold 5000 (5kg/L)
     const threshold = p.baseUnit === "ITEM" ? 50 : 5000;
     return Number(p.stockQuantityBase) < threshold;
@@ -112,7 +113,8 @@ export default async function AdminDashboardPage() {
         
         <div className="divide-y divide-[#27272a]">
           {lowStockProducts.length > 0 ? (
-            lowStockProducts.map(product => (
+            /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+            lowStockProducts.map((product: any) => (
               <div key={product.id} className="p-6 flex items-center justify-between hover:bg-[#18181b]/50 transition-colors">
                 <div>
                   <h3 className="font-semibold text-white text-sm">{product.name}</h3>

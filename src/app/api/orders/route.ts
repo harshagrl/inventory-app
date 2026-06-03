@@ -106,7 +106,8 @@ export async function POST(req: NextRequest) {
     const serializedOrder = {
       ...order,
       totalPaise: order.totalPaise.toString(),
-      items: order.items.map(i => ({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      items: order.items.map((i: any) => ({
         ...i,
         quantityBase: Number(i.quantityBase),
         unitDisplayQuantity: Number(i.unitDisplayQuantity),

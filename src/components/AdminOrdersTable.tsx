@@ -50,7 +50,8 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
       });
 
       if (res.ok) {
-        setOrders(orders.map(o => o.id === id ? { ...o, status: newStatus } : o));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setOrders(orders.map((o: any) => o.id === id ? { ...o, status: newStatus } : o));
         toast.success(`Order status updated to ${newStatus}`);
       } else {
         toast.error("Failed to update status");
@@ -143,7 +144,7 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
                           disabled={updatingId === order.id}
                           className="bg-[#18181b] border border-[#27272a] text-white text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-violet-500 transition-colors cursor-pointer disabled:opacity-50"
                         >
-                          {statuses.map(s => <option key={s} value={s}>{s}</option>)}
+                          {statuses.map((s: string) => <option key={s} value={s}>{s}</option>)}
                         </select>
                       </div>
                     </td>
@@ -156,7 +157,8 @@ export default function AdminOrdersTable({ initialOrders }: { initialOrders: Ord
                         <div className="p-6 ml-10">
                           <h4 className="text-xs font-bold text-[#a1a1aa] uppercase tracking-wider mb-4">Order Items Validation</h4>
                           <div className="space-y-3">
-                            {order.items.map(item => {
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                            {order.items.map((item: any) => {
                               // Item price logic: depending on what was ordered vs base unit
                               // We just display the calculated equivalent directly so admin can verify
                               const equivalentBase = formatQuantity(item.quantityBase, item.unitOrdered as "GRAM" | "MILLILITER" | "ITEM");

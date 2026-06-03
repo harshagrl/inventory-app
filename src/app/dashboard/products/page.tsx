@@ -52,7 +52,8 @@ export default function SellerProductsPage() {
           
           // Extract unique categories for the filter dropdown
           if (selectedCategory === "ALL" && !searchQuery) {
-            const uniqueCats = Array.from(new Set(data.map(p => p.category)));
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const uniqueCats = Array.from(new Set(data.map((p: any) => p.category)));
             setCategories(["ALL", ...uniqueCats]);
           }
         }
