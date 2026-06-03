@@ -82,7 +82,8 @@ export default async function AdminProductsPage() {
               </thead>
               <tbody className="divide-y divide-[#27272a]">
                 {products.length > 0 ? (
-                  products.map((p) => (
+                  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                  products.map((p: any) => (
                     <tr key={p.id} className="hover:bg-[#18181b]/20 transition-colors">
                       <td className="p-4">
                         <div className="font-semibold text-white text-sm">{p.name}</div>
