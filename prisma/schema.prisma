@@ -1,0 +1,143 @@
+// ──────────────────────────────────────────────────────────────
+// Prisma Schema — Inventory & Order Management System
+// Database: Neon PostgreSQL
+// ──────────────────────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  SELLER
+}
+
+enum BaseUnit {
+  GRAM
+  MILLILITER
+  ITEM
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// ─── NextAuth.js required tables ─────────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─── Application tables ──────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?   // hashed password for credentials login
+  role          Role      @default(SELLER)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  accounts Account[]
+  sessions Session[]
+  orders   Order[]
+
+  @@map("users")
+}
+
+model Product {
+  id                 String   @id @default(cuid())
+  name               String
+  description        String?  @db.Text
+  sku                String   @unique
+  category           String
+  baseUnit           BaseUnit @map("base_unit")
+  basePricePaise     BigInt   @map("base_price_paise") // price in paise (1 INR = 100 paise)
+  stockQuantityBase  Decimal  @map("stock_quantity_base") @db.Decimal(12, 3) // stock in base unit
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id         String      @id @default(cuid())
+  userId     String      @map("user_id")
+  status     OrderStatus @default(PENDING)
+  totalPaise BigInt      @map("total_paise") // total in paise
+  notes      String?     @db.Text
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime    @updatedAt @map("updated_at")
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id                     String   @id @default(cuid())
+  orderId                String   @map("order_id")
+  productId              String   @map("product_id")
+  quantityBase           Decimal  @map("quantity_base") @db.Decimal(12, 3) // qty in base unit
+  unitOrdered            BaseUnit @map("unit_ordered")
+  unitDisplayQuantity    Decimal  @map("unit_display_quantity") @db.Decimal(12, 3) // human-friendly qty
+  unitPricePaiseAtOrder  BigInt   @map("unit_price_paise_at_order") // price snapshot
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@map("order_items")
+}
